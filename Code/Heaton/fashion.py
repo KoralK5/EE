@@ -1,18 +1,20 @@
 import numpy as np
 import pandas as pd
+from sympy import rotations
 import tensorflow as tf
 from tensorflow.keras import layers
-from keras.datasets.mnist import load_data
+from tensorflow.keras.datasets import fashion_mnist
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 seed = 42
 np.random.seed(seed)
 tf.random.set_seed(seed)
 
 def fetch_data():
-    (X, Y), (Xtest, Ytest) = load_data()
+    (X, Y), (Xtest, Ytest) = fashion_mnist.load_data()
     dimensions = X.shape[1] * X.shape[2]
 
     X = X.reshape((X.shape[0], dimensions)) / 255.0
@@ -63,10 +65,19 @@ plt.xlabel('Epoch')
 plt.legend(['training', 'validation'], loc='upper left')
 plt.show()
 
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+
 realY = np.argmax(Ytest.copy(), axis=1)
 predY = np.argmax(model.predict(Xtest), axis=1)
 
-confusion = confusion_matrix(realY, predY)
-disp = ConfusionMatrixDisplay(confusion_matrix=confusion, display_labels=list(map(str, range(10))))
-disp.plot()
+cf_matrix = confusion_matrix(realY, predY)
+ax = sns.heatmap(cf_matrix, annot=True, cmap='Blues')
+
+ax.set_title('Confusion Matrix\n')
+ax.set_xlabel('\nPredicted Values')
+ax.set_ylabel('\nActual Values')
+
+ax.xaxis.set_ticklabels(class_names)
+ax.yaxis.set_ticklabels(class_names, rotation=0)
+
 plt.show()

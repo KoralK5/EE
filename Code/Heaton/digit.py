@@ -5,7 +5,8 @@ from tensorflow.keras import layers
 from keras.datasets.mnist import load_data
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 seed = 42
 np.random.seed(seed)
@@ -25,15 +26,15 @@ def fetch_data():
 
     return X, Y, Xtest, Ytest, Xval, Yval
 
-def timothy(i, o):
-    return int(np.sqrt(i*o))
+def heaton(i, o):
+    return int((2/3)*(i*o))
 
 X, Y, Xtest, Ytest, Xval, Yval = fetch_data()
 
 print('X-dims:', X.shape)
 print('Y-dims:', Y.shape)
 
-neurons = timothy(X.shape[1], Y.shape[1])
+neurons = heaton(X.shape[1], Y.shape[1])
 print('neurons:', neurons)
 
 model = tf.keras.Sequential([
@@ -63,10 +64,19 @@ plt.xlabel('Epoch')
 plt.legend(['training', 'validation'], loc='upper left')
 plt.show()
 
+class_names = list(range(10))
+
 realY = np.argmax(Ytest.copy(), axis=1)
 predY = np.argmax(model.predict(Xtest), axis=1)
 
-confusion = confusion_matrix(realY, predY)
-disp = ConfusionMatrixDisplay(confusion_matrix=confusion, display_labels=list(map(str, range(10))))
-disp.plot()
+cf_matrix = confusion_matrix(realY, predY)
+ax = sns.heatmap(cf_matrix, annot=True, cmap='Blues')
+
+ax.set_title('Confusion Matrix\n')
+ax.set_xlabel('\nPredicted Values')
+ax.set_ylabel('\nActual Values')
+
+ax.xaxis.set_ticklabels(class_names)
+ax.yaxis.set_ticklabels(class_names, rotation=0)
+
 plt.show()
