@@ -322,8 +322,8 @@ class NeuralNetwork:
             else:
                 train_losses.append(self.loss)
                 print("Epoch {} - Loss = {:.3f}".format(epoch, self.loss))
-            return {"Train_loss": train_losses, "Val_loss": val_losses,
-                "Val_performance": val_metrics, "Epochs": list(range(n_epochs))}
+
+        return {"Train_loss": train_losses, "Val_loss": val_losses, "Val_performance": val_metrics, "Epochs": list(range(n_epochs))}
 
     def print_predict(self, X, Y, epoch=-1):
         if X is None or Y is None:

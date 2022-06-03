@@ -1,7 +1,7 @@
 import numpy as np
 from keras.datasets.mnist import load_data
 
-from Models.NN import *
+from Models.MLP import *
 
 (X, Y), (Xtest, Ytest) = load_data()
 dimensions = X.shape[1] * X.shape[2]

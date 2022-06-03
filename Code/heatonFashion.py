@@ -28,7 +28,7 @@ def fetch_data():
     return X, Y, Xtest, Ytest, Xval, Yval
 
 def heaton(i, o):
-    return int((2/3)*(i*o))
+    return int((2/3)*i+o)
 
 X, Y, Xtest, Ytest, Xval, Yval = fetch_data()
 
