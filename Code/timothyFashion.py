@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from sympy import rotations
 import tensorflow as tf
+from time import time
 from tensorflow.keras import layers
 from tensorflow.keras.datasets import fashion_mnist
 from matplotlib import pyplot as plt
@@ -43,9 +43,13 @@ model = tf.keras.Sequential([
     layers.Dense(Y.shape[1], activation='softmax')
 ])
 
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics='accuracy')
+model.compile(optimizer='SGD', loss='mse', metrics='accuracy')
 
+start = time()
 history = model.fit(X, Y, validation_data=(Xval, Yval), epochs=10)
+end = time()
+
+print(time, 'seconds')
 
 training = pd.DataFrame(history.history)
 

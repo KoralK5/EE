@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from time import time
 from tensorflow.keras import layers
 from keras.datasets.mnist import load_data
 from matplotlib import pyplot as plt
@@ -42,9 +43,13 @@ model = tf.keras.Sequential([
     layers.Dense(Y.shape[1], activation='softmax')
 ])
 
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics='accuracy')
+model.compile(optimizer='SGD', loss='mse', metrics='accuracy')
 
+start = time()
 history = model.fit(X, Y, validation_data=(Xval, Yval), epochs=10)
+end = time()
+
+print(time, 'seconds')
 
 training = pd.DataFrame(history.history)
 
