@@ -143,7 +143,7 @@ plt.xlabel('Epoch')
 plt.legend(['neuron count'], loc='upper left')
 plt.show()
 
-class_names = list(range(10))
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
 realY = np.argmax(Ytest.copy(), axis=1)
 
