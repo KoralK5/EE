@@ -49,9 +49,9 @@ start = time()
 history = model.fit(X, Y, validation_data=(Xval, Yval), epochs=10)
 end = time()
 
-print(time, 'seconds')
+runtime = end - start
 
-training = pd.DataFrame(history.history)
+print(runtime, 'seconds')
 
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
@@ -72,7 +72,14 @@ plt.show()
 class_names = list(range(10))
 
 realY = np.argmax(Ytest.copy(), axis=1)
+
+start_t = time()
 predY = np.argmax(model.predict(Xtest), axis=1)
+end_t = time()
+
+runtime_t = end_t - start_t
+
+print(runtime_t, 'seconds')
 
 cf_matrix = confusion_matrix(realY, predY)
 ax = sns.heatmap(cf_matrix, annot=True, cmap='Blues')

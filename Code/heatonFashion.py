@@ -51,8 +51,6 @@ end = time()
 
 print(time, 'seconds')
 
-training = pd.DataFrame(history.history)
-
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
 plt.title('Model Accuracy')
