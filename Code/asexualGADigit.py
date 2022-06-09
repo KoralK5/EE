@@ -1,4 +1,3 @@
-from msilib import CreateRecord
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -110,7 +109,6 @@ print(runtime, 'seconds')
 print('parents', parents)
 
 model = trained_models[-1]
-
 history = training_hist[-1]
 
 plt.plot(history.history['accuracy'])
