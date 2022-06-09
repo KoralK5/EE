@@ -42,8 +42,8 @@ def create_model(n):
 def mutate(n, rate=100, ub=533, lb=1):
     return randint(max(n-rate, lb), min(n+rate, ub))
 
-def create_batch(parent, size=2):
-    topology = set()
+def create_batch(parent, size=5):
+    topology = set(parent)
     while len(topology) < size:
         neurons = mutate(parent)
         topology.add(neurons)
@@ -55,7 +55,7 @@ def fitness(model, Xtest, Ytest):
     accuracy = np.sum(realY == predY) / len(Ytest)
     return accuracy
 
-def selection(models, topology, Xtest, Ytest):
+def selection(models, Xtest, Ytest):
     best_acc = 0
     best_idx = 0
     for idx in range(len(models)):
@@ -76,6 +76,7 @@ bound = heaton(X.shape[1], Y.shape[1])
 print('neurons:', neurons)
 
 start = time()
+trained_models = []
 best_histories = []
 histories = []
 training_hist = []
@@ -95,8 +96,9 @@ for i in range(10):
         models.append(cur_model)
         histories[-1].append(cur_history)
 
-    idx, parent_acc = selection(models, topology, Xtest, Ytest)
+    idx, parent_acc = selection(models, Xtest, Ytest)
     parent = topology[idx]
+    trained_models.append(models[idx])
     training_hist.append(histories[-1][idx])
     best_histories.append(parent_acc)
     parents.append(parent)
@@ -107,7 +109,8 @@ runtime = end - start
 print(runtime, 'seconds')
 print('parents', parents)
 
-model = create_model(parent)
+model = trained_models[-1]
+
 history = training_hist[-1]
 
 plt.plot(history.history['accuracy'])
