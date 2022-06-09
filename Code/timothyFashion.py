@@ -3,7 +3,7 @@ import pandas as pd
 import tensorflow as tf
 from time import time
 from tensorflow.keras import layers
-from tensorflow.keras.datasets import fashion_mnist
+from keras.datasets.fashion_mnist import load_data
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -14,7 +14,7 @@ np.random.seed(seed)
 tf.random.set_seed(seed)
 
 def fetch_data():
-    (X, Y), (Xtest, Ytest) = fashion_mnist.load_data()
+    (X, Y), (Xtest, Ytest) = load_data()
     dimensions = X.shape[1] * X.shape[2]
 
     X = X.reshape((X.shape[0], dimensions)) / 255.0
