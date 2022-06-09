@@ -42,7 +42,8 @@ def mutate(n, rate=100, ub=533, lb=1):
     return randint(max(n-rate, lb), min(n+rate, ub))
 
 def create_batch(parent, size=5):
-    topology = set(parent)
+    topology = set()
+    topology.add(parent)
     while len(topology) < size:
         neurons = mutate(parent)
         topology.add(neurons)
