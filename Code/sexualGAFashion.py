@@ -136,7 +136,6 @@ plt.bar(range(1, len(parents)+1), parents)
 plt.title('The Evolution of Hidden Neuron Count')
 plt.ylabel('Hidden Neurons')
 plt.xlabel('Generation')
-plt.legend(['neuron count'], loc='upper left')
 plt.show()
 
 plt.bar(range(1, len(best_histories)+1), best_histories)
@@ -144,7 +143,6 @@ plt.yscale('log')
 plt.title('The Accuracy of the Best Model in each Batch')
 plt.ylabel('Accuracy')
 plt.xlabel('Generation')
-plt.legend(['neuron count'], loc='upper left')
 plt.show()
 
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
