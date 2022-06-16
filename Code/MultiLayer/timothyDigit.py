@@ -52,6 +52,7 @@ for i in range(2):
     neurons.append(timothy(I, Y.shape[1]))
     I = neurons[-1]
     model = create_model(neurons)
+
     print(neurons)
 
     start = time()
