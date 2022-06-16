@@ -44,7 +44,7 @@ print('Y-dims:', Y.shape)
 I = X.shape[1]
 neurons = []
 times = []
-for i in range(5):
+for i in range(2):
     seed = 42
     np.random.seed(seed)
     tf.random.set_seed(seed)
@@ -52,6 +52,7 @@ for i in range(5):
     neurons.append(timothy(I, Y.shape[1]))
     I = neurons[-1]
     model = create_model(neurons)
+    print(neurons)
 
     start = time()
     history = model.fit(X, Y, validation_data=(Xval, Yval), epochs=10)
