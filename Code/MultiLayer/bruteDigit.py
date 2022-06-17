@@ -34,7 +34,7 @@ print('X-dims:', X.shape)
 print('Y-dims:', Y.shape)
 
 mn = 10
-mx = 20
+mx = 550
 inc = 10
 min_layers = 1
 max_layers = 3
@@ -47,6 +47,7 @@ for i in range(min_layers, max_layers+1):
         neuron_cnt.append(i*j)
         layer_cnt.append(i)
 
+start = time()
 for neurons in range(mn, mx+1, inc):
     print('neurons:', neurons)
 
@@ -109,22 +110,23 @@ for neurons in range(mn, mx+1, inc):
     accuracy = np.sum(realY == predY) / len(Ytest)
 
     accuracies.append(accuracy)
+end = time()
+
+runtime = end - start
 
 x = np.asarray(neuron_cnt)
 y = np.asarray(layer_cnt)
 z = np.asarray(accuracies)
 
-x, y = np.meshgrid(x, y)
-z = np.repeat(z[:, :, np.newaxis], len(x), axis=1)
-
 print('neurons', x)
 print('layers', y)
 print('accuracies', z)
+print('runtime', runtime)
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-ax.contour3D(x, y, z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
-ax.set_title('Accuracy Across Different Hidden Layer Neuron Counts')
+ax.scatter3D(x, y, z, c=z, cmap='RdYlGn')
+ax.set_title('Accuracy Across Different Hidden Neuron Combinations')
 ax.set_xlabel('Hidden Neurons Per Layer')
 ax.set_ylabel('Layer Count')
 ax.set_zlabel('Accuracy')

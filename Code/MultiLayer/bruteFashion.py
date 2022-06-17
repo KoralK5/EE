@@ -5,6 +5,7 @@ from time import time
 from tensorflow.keras import layers
 from keras.datasets.fashion_mnist import load_data
 from matplotlib import pyplot as plt
+from mpl_toolkits import mplot3d
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
@@ -35,7 +36,18 @@ print('Y-dims:', Y.shape)
 mn = 10
 mx = 550
 inc = 10
+min_layers = 1
+max_layers = 3
 accuracies = []
+layer_cnt = []
+neuron_cnt = []
+
+for i in range(min_layers, max_layers+1):
+    for j in range(mn, mx+1, inc):
+        neuron_cnt.append(i*j)
+        layer_cnt.append(i)
+
+start = time()
 for neurons in range(mn, mx+1, inc):
     print('neurons:', neurons)
 
@@ -56,10 +68,66 @@ for neurons in range(mn, mx+1, inc):
 
     accuracies.append(accuracy)
 
-print('accuracies', accuracies)
+for neurons in range(mn, mx+1, inc):
+    print('neurons:', neurons)
 
-plt.plot(list(range(mn, mx+1, inc)), accuracies)
-plt.title('Accuracy Across Different Hidden Layer Neuron Counts')
-plt.ylabel('Validation Accuracy')
-plt.xlabel('Hidden Neurons')
+    model = tf.keras.Sequential([
+        layers.Dense(neurons, input_shape=(X.shape[1],), activation='relu'),
+        layers.Dense(neurons, activation='relu'),
+        layers.Dense(Y.shape[1], activation='softmax')
+    ])
+
+    model.compile(optimizer='SGD', loss='mse', metrics='accuracy')
+
+    start = time()
+    history = model.fit(X, Y, validation_data=(Xval, Yval), epochs=10)
+    end = time()
+
+    realY = np.argmax(Ytest.copy(), axis=1)
+    predY = np.argmax(model.predict(Xtest), axis=1)
+    accuracy = np.sum(realY == predY) / len(Ytest)
+
+    accuracies.append(accuracy)
+
+for neurons in range(mn, mx+1, inc):
+    print('neurons:', neurons)
+
+    model = tf.keras.Sequential([
+        layers.Dense(neurons, input_shape=(X.shape[1],), activation='relu'),
+        layers.Dense(neurons, activation='relu'),
+        layers.Dense(neurons, activation='relu'),
+        layers.Dense(Y.shape[1], activation='softmax')
+    ])
+
+    model.compile(optimizer='SGD', loss='mse', metrics='accuracy')
+
+    start = time()
+    history = model.fit(X, Y, validation_data=(Xval, Yval), epochs=10)
+    end = time()
+
+    realY = np.argmax(Ytest.copy(), axis=1)
+    predY = np.argmax(model.predict(Xtest), axis=1)
+    accuracy = np.sum(realY == predY) / len(Ytest)
+
+    accuracies.append(accuracy)
+end = time()
+
+runtime = end - start
+
+x = np.asarray(neuron_cnt)
+y = np.asarray(layer_cnt)
+z = np.asarray(accuracies)
+
+print('neurons', x)
+print('layers', y)
+print('accuracies', z)
+print('runtime', runtime)
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.scatter3D(x, y, z, c=z, cmap='RdYlGn')
+ax.set_title('Accuracy Across Different Hidden Layer Neuron Counts')
+ax.set_xlabel('Hidden Neurons Per Layer')
+ax.set_ylabel('Layer Count')
+ax.set_zlabel('Accuracy')
 plt.show()
