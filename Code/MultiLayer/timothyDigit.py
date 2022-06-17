@@ -44,7 +44,7 @@ print('Y-dims:', Y.shape)
 I = X.shape[1]
 neurons = []
 times = []
-for i in range(2):
+for i in range(5):
     seed = 42
     np.random.seed(seed)
     tf.random.set_seed(seed)
@@ -63,4 +63,5 @@ for i in range(2):
     times.append(runtime)
 
 print('neurons', neurons)
-print('runtime', runtime)
+print('layers', list(range(1, 6)))
+print('runtime', times)
