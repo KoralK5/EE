@@ -45,10 +45,10 @@ neuron_cnt = []
 
 for i in range(min_layers, max_layers+1):
     for j in range(mn, mx+1, inc):
-        neuron_cnt.append(i*j)
         layer_cnt.append(i)
+        neuron_cnt.append(j)
 
-start = time()
+start_tot = time()
 for neurons in range(mn, mx+1, inc):
     print('neurons:', neurons)
 
@@ -111,9 +111,9 @@ for neurons in range(mn, mx+1, inc):
     accuracy = np.sum(realY == predY) / len(Ytest)
 
     accuracies.append(accuracy)
-end = time()
+end_tot = time()
 
-runtime = end - start
+runtime = end_tot - start_tot
 
 x = np.asarray(neuron_cnt)
 y = np.asarray(layer_cnt)
@@ -126,10 +126,10 @@ print('runtime', runtime)
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-ax.scatter3D(x, y, z, c=z, cmap='RdYlGn')
+ax.plot_trisurf(x, y, z, cmap='RdYlGn')
 ax.set_title('Accuracy Across Different Hidden Neuron Combinations')
 ax.set_xlabel('Hidden Neurons Per Layer')
 ax.set_ylabel('Layer Count')
 ax.set_zlabel('Accuracy')
-plt.savefig(os.getcwd() + '\\Code\\Multilayer\\Graph\\Brute\\brute1.png')
+plt.savefig(os.getcwd() + '\\Code\\Multilayer\\Graph\\Brute\\brute2.png')
 plt.show()
