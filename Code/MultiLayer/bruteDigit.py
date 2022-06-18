@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import os
 from time import time
 from tensorflow.keras import layers
 from keras.datasets.mnist import load_data
@@ -130,4 +131,5 @@ ax.set_title('Accuracy Across Different Hidden Neuron Combinations')
 ax.set_xlabel('Hidden Neurons Per Layer')
 ax.set_ylabel('Layer Count')
 ax.set_zlabel('Accuracy')
+plt.savefig(os.getcwd() + '\\Code\\Multilayer\\Graph\\Brute\\brute1.png')
 plt.show()
