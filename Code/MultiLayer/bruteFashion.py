@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import os
 from time import time
 from tensorflow.keras import layers
 from keras.datasets.fashion_mnist import load_data
@@ -44,10 +45,10 @@ neuron_cnt = []
 
 for i in range(min_layers, max_layers+1):
     for j in range(mn, mx+1, inc):
-        neuron_cnt.append(i*j)
         layer_cnt.append(i)
+        neuron_cnt.append(j)
 
-start = time()
+start_tot = time()
 for neurons in range(mn, mx+1, inc):
     print('neurons:', neurons)
 
@@ -110,9 +111,9 @@ for neurons in range(mn, mx+1, inc):
     accuracy = np.sum(realY == predY) / len(Ytest)
 
     accuracies.append(accuracy)
-end = time()
+end_tot = time()
 
-runtime = end - start
+runtime = end_tot - start_tot
 
 x = np.asarray(neuron_cnt)
 y = np.asarray(layer_cnt)
@@ -125,9 +126,10 @@ print('runtime', runtime)
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-ax.scatter3D(x, y, z, c=z, cmap='RdYlGn')
-ax.set_title('Accuracy Across Different Hidden Layer Neuron Counts')
+ax.plot_trisurf(x, y, z, cmap='RdYlGn')
+ax.set_title('Accuracy Across Different Hidden Neuron Combinations')
 ax.set_xlabel('Hidden Neurons Per Layer')
 ax.set_ylabel('Layer Count')
 ax.set_zlabel('Accuracy')
+plt.savefig(os.getcwd() + '\\Code\\Multilayer\\Graph\\Brute\\brute4.png')
 plt.show()
